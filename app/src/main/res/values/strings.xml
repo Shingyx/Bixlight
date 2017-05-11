@@ -1,6 +1,4 @@
 <resources>
     <string name="app_name">Bixlight</string>
-    <string name="accessibility_description">
-        Enable to remap the Bixby button to toggle the torch
-    </string>
+    <string name="accessibility_description">Enable to remap the Bixby button to toggle the torch</string>
 </resources>

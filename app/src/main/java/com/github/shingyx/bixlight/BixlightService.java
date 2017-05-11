@@ -14,7 +14,7 @@ import android.view.accessibility.AccessibilityEvent;
 public class BixlightService extends AccessibilityService {
 
     private static final String TAG = "BixlightService";
-    private static final String BIXBY_CLASS = "com.samsung.android.app.spage.main.oobe.OobeActivity";
+    private static final String BIXBY_PACKAGE = "com.samsung.android.app.spage";
 
     private CameraManager cameraManager;
     private String cameraId;
@@ -28,10 +28,11 @@ public class BixlightService extends AccessibilityService {
         info.flags = AccessibilityServiceInfo.DEFAULT;
         info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
         info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
+        info.packageNames = new String[]{BIXBY_PACKAGE};
         setServiceInfo(info);
 
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
-        lazySetupCamera();
+        setupCameraIfNeeded();
     }
 
     @Override
@@ -40,14 +41,12 @@ public class BixlightService extends AccessibilityService {
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 AccessibilityEvent.eventTypeToString(event.getEventType()), event.getClassName(),
                 event.getPackageName(), event.getEventTime(), getEventText(event)));
-        if (event.getClassName().equals(BIXBY_CLASS)) {
-            Log.v(TAG, "Opened Bixby");
-            performGlobalAction(GLOBAL_ACTION_BACK);
+        performGlobalAction(GLOBAL_ACTION_BACK);
+        if (setupCameraIfNeeded()) {
             try {
-                lazySetupCamera();
                 cameraManager.setTorchMode(cameraId, !torchEnabled);
             } catch (CameraAccessException e) {
-                e.printStackTrace();
+                Log.v(TAG, "onServiceConnected failed to toggle torch");
             }
         }
     }
@@ -75,15 +74,15 @@ public class BixlightService extends AccessibilityService {
         return builder.toString();
     }
 
-    private void lazySetupCamera() {
+    private boolean setupCameraIfNeeded() {
         if (cameraId != null) {
-            return;
+            return true;
         }
         try {
             cameraId = cameraManager.getCameraIdList()[0];  // Usually back camera is at 0 position
         } catch (CameraAccessException e) {
             Log.v(TAG, "onServiceConnected failed to set up camera");
-            return;
+            return false;
         }
         torchEnabled = false;
         Handler handler = new Handler();
@@ -96,5 +95,6 @@ public class BixlightService extends AccessibilityService {
         };
         cameraManager.registerTorchCallback(torchCallback, handler);
         Log.v(TAG, "registered torch callback");
+        return true;
     }
 }
