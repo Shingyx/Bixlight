@@ -1,4 +1,4 @@
-package com.github.shingyx.byebix;
+package com.github.shingyx.bixlight;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.AccessibilityServiceInfo;
@@ -11,9 +11,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 
-public class MyAccessibilityService extends AccessibilityService {
+public class BixlightService extends AccessibilityService {
 
-    private static final String TAG = "MyAccessibilityService";
+    private static final String TAG = "BixlightService";
     private static final String BIXBY_CLASS = "com.samsung.android.app.spage.main.oobe.OobeActivity";
 
     private CameraManager cameraManager;
@@ -46,7 +46,6 @@ public class MyAccessibilityService extends AccessibilityService {
             try {
                 lazySetupCamera();
                 cameraManager.setTorchMode(cameraId, !torchEnabled);
-                torchEnabled = !torchEnabled;
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
@@ -81,9 +80,8 @@ public class MyAccessibilityService extends AccessibilityService {
             return;
         }
         try {
-            cameraId = cameraManager.getCameraIdList()[0];
+            cameraId = cameraManager.getCameraIdList()[0];  // Usually back camera is at 0 position
         } catch (CameraAccessException e) {
-            // Usually back camera is at 0 position.
             Log.v(TAG, "onServiceConnected failed to set up camera");
             return;
         }

@@ -1,4 +1,4 @@
-package com.github.shingyx.byebix;
+package com.github.shingyx.bixlight;
 
 import org.junit.Test;
 
