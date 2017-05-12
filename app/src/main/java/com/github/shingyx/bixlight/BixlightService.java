@@ -63,7 +63,7 @@ public class BixlightService extends AccessibilityService {
             cameraManager.unregisterTorchCallback(torchCallback);
             Log.v(TAG, "unregistered torch callback");
         }
-        return super.onUnbind(intent);
+        return false;
     }
 
     private String getEventText(AccessibilityEvent event) {
