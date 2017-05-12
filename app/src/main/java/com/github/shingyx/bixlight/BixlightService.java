@@ -12,7 +12,7 @@ import android.view.accessibility.AccessibilityEvent;
 
 public class BixlightService extends AccessibilityService {
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = BixlightService.class.getSimpleName();
 
     private CameraManager cameraManager;
     private String cameraId;
