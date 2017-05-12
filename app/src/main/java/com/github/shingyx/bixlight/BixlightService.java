@@ -1,7 +1,6 @@
 package com.github.shingyx.bixlight;
 
 import android.accessibilityservice.AccessibilityService;
-import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.CameraAccessException;
@@ -13,8 +12,7 @@ import android.view.accessibility.AccessibilityEvent;
 
 public class BixlightService extends AccessibilityService {
 
-    private static final String TAG = "BixlightService";
-    private static final String BIXBY_PACKAGE = "com.samsung.android.app.spage";
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private CameraManager cameraManager;
     private String cameraId;
@@ -24,13 +22,6 @@ public class BixlightService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         Log.v(TAG, "onServiceConnected");
-        AccessibilityServiceInfo info = new AccessibilityServiceInfo();
-        info.flags = AccessibilityServiceInfo.DEFAULT;
-        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED;
-        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
-        info.packageNames = new String[]{BIXBY_PACKAGE};
-        setServiceInfo(info);
-
         cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         setupCameraIfNeeded();
     }
@@ -46,7 +37,7 @@ public class BixlightService extends AccessibilityService {
             try {
                 cameraManager.setTorchMode(cameraId, !torchEnabled);
             } catch (CameraAccessException e) {
-                Log.v(TAG, "onServiceConnected failed to toggle torch");
+                Log.v(TAG, "failed to toggle torch");
             }
         }
     }
@@ -81,7 +72,7 @@ public class BixlightService extends AccessibilityService {
         try {
             cameraId = cameraManager.getCameraIdList()[0];  // Usually back camera is at 0 position
         } catch (CameraAccessException e) {
-            Log.v(TAG, "onServiceConnected failed to set up camera");
+            Log.v(TAG, "failed to set up camera");
             return false;
         }
         torchEnabled = false;
