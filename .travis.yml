@@ -5,3 +5,6 @@ android:
   components:
     - build-tools-25.0.2
     - android-25
+
+before_install:
+  - chmod +x gradlew
