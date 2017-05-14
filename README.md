@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/Shingyx/Bixlight.svg?branch=master)](https://travis-ci.org/Shingyx/Bixlight)
 
-This application allows you to remap Bixby button on the Galaxy S8/S8+ to toggle the torch.
+This application allows you to remap the Bixby button on the Galaxy S8/S8+ to toggle the torch.
 
 Download the APK from the releases tab (link for the lazy: https://github.com/Shingyx/Bixlight/releases)
 
