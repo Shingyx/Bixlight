@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
+import android.os.AsyncTask;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -32,7 +33,6 @@ public class BixlightService extends AccessibilityService {
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 AccessibilityEvent.eventTypeToString(event.getEventType()), event.getClassName(),
                 event.getPackageName(), event.getEventTime(), getEventText(event)));
-        performGlobalAction(GLOBAL_ACTION_BACK);
         if (setupCameraIfNeeded()) {
             try {
                 cameraManager.setTorchMode(cameraId, !torchEnabled);
@@ -40,6 +40,18 @@ public class BixlightService extends AccessibilityService {
                 Log.v(TAG, "failed to toggle torch");
             }
         }
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    // noop
+                }
+                performGlobalAction(GLOBAL_ACTION_BACK);
+                return null;
+            }
+        }.execute();
     }
 
     @Override
