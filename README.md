@@ -9,7 +9,7 @@ Download the APK from the releases tab (link for the lazy: https://github.com/Sh
 
 ## How does it work?
 
-You can probably figure it out by looking at the code - there's not much of it. It runs an accessibility service in the background which listens for window state changes to any application from the package `com.samsung.android.app.spage`. If this condition is met, it simulates pressing the back button and then toggles the torch's state. This means that Bixby will probably flash open before closing again, but this is currently the best approach to remap the button on an unrooted phone without hindering performance, especially after Samsung removed the ability to see the button's key event.
+You can probably figure it out by looking at the code - there's not much of it. It runs an accessibility service in the background which listens for window state changes to any application from the package `com.samsung.android.app.spage`. If this condition is met, it simulates pressing the back button and toggles the torch's state. This means that Bixby will probably flash open before closing again, but this is currently the best approach to remap the button on an unrooted phone without hindering performance, especially after Samsung removed the ability to see the button's key event.
 
 In my testing, Bixlight is the best compromise in terms of how fast Bixby closes and how it affects the system's overall performance when compared to other Bixby button remappers on the Play Store (I only tested those with no ads). However, Bixlight's only feature is turning the torch on and off, because that's all I wanted on my personal phone.
 
