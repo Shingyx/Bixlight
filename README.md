@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/Shingyx/Bixlight.svg?branch=master)](https://travis-ci.org/Shingyx/Bixlight)
 
+**Note:** After the AQG5 update in late July, Bixlight no longer works as Samsung have stopped window state changes for Bixby from being sent to Accessibility Services. I don't plan to fix this in the near future unless I find an approach that does not involve polling.
+
 This application allows you to remap the Bixby button on the Galaxy S8/S8+ to toggle the torch.
 
 Download the APK from the releases tab (link for the lazy: https://github.com/Shingyx/Bixlight/releases)
