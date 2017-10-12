@@ -8,7 +8,7 @@ android:
   - build-tools-25.0.3
   - android-25
   licenses:
-  - android-sdk-license-.+
+  - android-sdk-license-c81a61d9
 
 before_install:
 - openssl aes-256-cbc -K $encrypted_d172885485a0_key -iv $encrypted_d172885485a0_iv -in archive.tar.gz.enc -out archive.tar.gz -d
