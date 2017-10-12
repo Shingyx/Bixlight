@@ -10,10 +10,12 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 
 public class BixlightService extends AccessibilityService {
 
     private static final String TAG = BixlightService.class.getSimpleName();
+    private static final String BIXBY_PACKAGE = "com.samsung.android.app.spage";
 
     private CameraManager cameraManager;
     private String cameraId;
@@ -29,10 +31,16 @@ public class BixlightService extends AccessibilityService {
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        String activeWindowPackage = getActiveWindowPackage();
+
         Log.v(TAG, String.format(
-                "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
-                AccessibilityEvent.eventTypeToString(event.getEventType()), event.getClassName(),
-                event.getPackageName(), event.getEventTime(), getEventText(event)));
+                "onAccessibilityEvent: [type] %s [time] %s [activeWindowPackage] %s",
+                AccessibilityEvent.eventTypeToString(event.getEventType()), event.getEventTime(), activeWindowPackage));
+
+        if (!BIXBY_PACKAGE.equals(activeWindowPackage)) {
+            return;
+        }
+
         if (setupCameraIfNeeded()) {
             try {
                 cameraManager.setTorchMode(cameraId, !torchEnabled);
@@ -44,7 +52,7 @@ public class BixlightService extends AccessibilityService {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(50);
                 } catch (InterruptedException e) {
                     // noop
                 }
@@ -69,12 +77,9 @@ public class BixlightService extends AccessibilityService {
         return false;
     }
 
-    private String getEventText(AccessibilityEvent event) {
-        StringBuilder builder = new StringBuilder();
-        for (CharSequence s : event.getText()) {
-            builder.append(s);
-        }
-        return builder.toString();
+    private String getActiveWindowPackage() {
+        AccessibilityNodeInfo rootInActiveWindow = getRootInActiveWindow();
+        return rootInActiveWindow != null ? rootInActiveWindow.getPackageName().toString() : null;
     }
 
     private boolean setupCameraIfNeeded() {
