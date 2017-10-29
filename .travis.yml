@@ -15,10 +15,11 @@ before_install:
 - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 
 before_script:
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "tools"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platform-tools"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;26.0.2"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-26"
+  # Suppress output to keep log under Travis limit
+  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "tools" > /dev/null
+  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platform-tools" > /dev/null
+  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;26.0.2" > /dev/null
+  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-26" > /dev/null
 
 script: "./gradlew clean build"
 
