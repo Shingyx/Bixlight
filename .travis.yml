@@ -21,7 +21,7 @@ before_script:
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;26.0.2" > /dev/null
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-26" > /dev/null
 
-script: "./gradlew clean build"
+script: ./gradlew clean build
 
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
