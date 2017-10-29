@@ -37,7 +37,7 @@ deploy:
   provider: releases
   api_key:
     secure: pfhSg1AOAA4plfcd7M7uKBa63KBM+RCyFnVvRPqkt1FgW6HaORwtURx1qxDHIYsLGE7PF/+o5fKWMoS368pH/tAHPDjv4RNGt+uWXx02mt+4PPhAyC6V9kJT5EAkAAAfwLeYqevAD76aHArLdzrYNcSwUZ166SOAiFuBMpq5zYhIga3i05GFj1gl86R64QoV+e07i/XX+VMr2GqLcQQL938xkm8obVBg5+n6K65RVF+am91IZunyEM5mJ5XgiAjGpEbxGQoEnQqbHTxiW2paWgKS420GHOnLqhQDGb2Rp2Zz8IvVlLr7cowlK6fVTuPv0v9d1pEwyqc2XA73TANhjHyWEbuumOfw7OyekSRVV1D2azvPgE1H6SgJ4gDPpOeVaSajbBZdqnbtshZU1SqCJ/3ygy4EYSzNMUweJYL2lU9x60ULdiDwatAnOVMQ9eTwiXYFfFC7jWhu1t7Vcx7f4KwJzVsbJF60i1KTs0n64OmRVqSdGh1uFic0srrXFamDDj6G7h2+antfS7gKxUY6hobwEbXE+09WrYJF3ZI81Vjpgz7uW4oXpaqP9HZwlYu/Gbj4a9KPKrmW5YGsw4ewvgWf6CuoyPaIyWr/4/205qfB/VdQe/gfLtgywrtbO08mzlllwcbFLB94fC40/Usm4khE5EdA+9DD8mKhRZhEc2g=
-  file: bixlight/build/outputs/apk/bixlight-release.apk
+  file: bixlight/build/outputs/apk/release/bixlight-release.apk
   skip_cleanup: true
   on:
     repo: Shingyx/Bixlight
