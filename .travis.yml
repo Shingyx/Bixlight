@@ -17,8 +17,8 @@ before_install:
 before_script:
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "tools"
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platform-tools"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;25.0.3"
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-25"
+  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;26.0.2"
+  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-26"
 
 script: "./gradlew clean build"
 

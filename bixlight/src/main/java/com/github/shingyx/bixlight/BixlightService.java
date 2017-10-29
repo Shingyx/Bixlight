@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import java.lang.ref.WeakReference;
+
 public class BixlightService extends AccessibilityService {
 
     private static final String TAG = BixlightService.class.getSimpleName();
@@ -48,18 +50,7 @@ public class BixlightService extends AccessibilityService {
                 Log.v(TAG, "failed to toggle torch");
             }
         }
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    Thread.sleep(50);
-                } catch (InterruptedException e) {
-                    // noop
-                }
-                performGlobalAction(GLOBAL_ACTION_BACK);
-                return null;
-            }
-        }.execute();
+        new DelayedBackButtonTask(this).execute();
     }
 
     @Override
@@ -104,5 +95,28 @@ public class BixlightService extends AccessibilityService {
         cameraManager.registerTorchCallback(torchCallback, handler);
         Log.v(TAG, "registered torch callback");
         return true;
+    }
+
+    private static class DelayedBackButtonTask extends AsyncTask<Void, Void, Void> {
+
+        private WeakReference<BixlightService> activityReference;
+
+        DelayedBackButtonTask(BixlightService context) {
+            activityReference = new WeakReference<>(context);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                // noop
+            }
+            BixlightService service = activityReference.get();
+            if (service != null) {
+                service.performGlobalAction(GLOBAL_ACTION_BACK);
+            }
+            return null;
+        }
     }
 }

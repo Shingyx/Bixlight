@@ -26,13 +26,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         View button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
+        button.setOnClickListener(v -> {
+            Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         });
 
         bixlightServiceId = String.format("%s/.%s", getPackageName(), BixlightService.class.getSimpleName());
@@ -43,18 +40,20 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         Log.v(TAG, "onResume");
         int resId = isBixlightEnabled() ? R.string.service_enabled : R.string.service_disabled;
-        TextView serviceState = (TextView) findViewById(R.id.serviceState);
+        TextView serviceState = findViewById(R.id.serviceState);
         serviceState.setText(getText(resId));
     }
 
     private boolean isBixlightEnabled() {
-        AccessibilityManager am = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
-        List<AccessibilityServiceInfo> runningServices = am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
         boolean ret = false;
-        for (AccessibilityServiceInfo service : runningServices) {
-            if (service.getId().equals(bixlightServiceId)) {
-                ret = true;
-                break;
+        AccessibilityManager accessibilityManager = (AccessibilityManager) getSystemService(Context.ACCESSIBILITY_SERVICE);
+        if (accessibilityManager != null) {
+            List<AccessibilityServiceInfo> runningServices = accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
+            for (AccessibilityServiceInfo service : runningServices) {
+                if (service.getId().equals(bixlightServiceId)) {
+                    ret = true;
+                    break;
+                }
             }
         }
         Log.v(TAG, "isBixlightEnabled = " + ret);
