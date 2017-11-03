@@ -13,16 +13,19 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.lang.ref.WeakReference;
+import java.util.Calendar;
 
 public class BixlightService extends AccessibilityService {
 
     private static final String TAG = BixlightService.class.getSimpleName();
     private static final String BIXBY_PACKAGE = "com.samsung.android.app.spage";
+    private static final long MAX_RUN_FREQUENCY_MS = 1000;
 
     private CameraManager cameraManager;
     private String cameraId;
     private CameraManager.TorchCallback torchCallback;
     private boolean torchEnabled;
+    private long lastRunMillis = 0;
 
     @Override
     protected void onServiceConnected() {
@@ -39,12 +42,18 @@ public class BixlightService extends AccessibilityService {
                 "onAccessibilityEvent: [type] %s [time] %s [activeWindowPackage] %s",
                 AccessibilityEvent.eventTypeToString(event.getEventType()), event.getEventTime(), activeWindowPackage));
 
-        if (!BIXBY_PACKAGE.equals(activeWindowPackage)) {
+        long currentMillis = Calendar.getInstance().getTimeInMillis();
+        boolean runTooSoon = (currentMillis - lastRunMillis) < MAX_RUN_FREQUENCY_MS;
+
+        if (runTooSoon || !BIXBY_PACKAGE.equals(activeWindowPackage)) {
             return;
         }
 
         if (setupCameraIfNeeded()) {
             try {
+                String action = torchEnabled ? "OFF" : "ON";
+                Log.v(TAG, "turning " + action + " torch");
+                lastRunMillis = currentMillis;
                 cameraManager.setTorchMode(cameraId, !torchEnabled);
             } catch (CameraAccessException e) {
                 Log.v(TAG, "failed to toggle torch");
@@ -110,7 +119,7 @@ public class BixlightService extends AccessibilityService {
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
-                // noop
+                Log.v(TAG, "interrupted");
             }
             BixlightService service = activityReference.get();
             if (service != null) {
