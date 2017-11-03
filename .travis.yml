@@ -23,8 +23,8 @@ before_script:
 
 script:
   # Skip the signed release build for pull requests
-  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./gradlew clean build; fi'
-  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./gradlew clean assembleDebug test; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./gradlew clean build; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./gradlew clean assembleDebug test; fi'
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
