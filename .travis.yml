@@ -3,16 +3,16 @@ jdk: oraclejdk8
 
 android:
   components:
-  - tools
+    - tools
   licenses:
-  - android-sdk-license-.+
+    - android-sdk-license-.+
 
 before_install:
-- openssl aes-256-cbc -K $encrypted_d172885485a0_key -iv $encrypted_d172885485a0_iv -in archive.tar.gz.enc -out archive.tar.gz -d
-- tar -xzvf archive.tar.gz
-- chmod +x gradlew
-- mkdir "$ANDROID_HOME/licenses" || true
-- echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - openssl aes-256-cbc -K $encrypted_d172885485a0_key -iv $encrypted_d172885485a0_iv -in archive.tar.gz.enc -out archive.tar.gz -d
+  - tar -xzvf archive.tar.gz
+  - chmod +x gradlew
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
 
 before_script:
   # Suppress output to keep log under Travis limit
@@ -21,11 +21,14 @@ before_script:
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;26.0.2" > /dev/null
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-26" > /dev/null
 
-script: ./gradlew clean build
+script:
+  # Skip the signed release build for pull requests
+  - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./gradlew clean build; fi'
+  - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash ./gradlew clean assembleDebug test; fi'
 
 before_cache:
-- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:

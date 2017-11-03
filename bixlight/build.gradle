@@ -2,7 +2,16 @@ apply plugin: 'com.android.application'
 
 def keystorePropertiesFile = rootProject.file("keystore.properties")
 def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+try {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+} catch (FileNotFoundException ignored) {
+    logger.warn('keystore.properties not found - setting junk properties')
+
+    keystoreProperties.setProperty('storeFile', 'junk')
+    keystoreProperties.setProperty('storePassword', 'junk')
+    keystoreProperties.setProperty('keyAlias', 'junk')
+    keystoreProperties.setProperty('keyPassword', 'junk')
+}
 
 android {
     signingConfigs {
