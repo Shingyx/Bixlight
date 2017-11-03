@@ -13,7 +13,6 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.lang.ref.WeakReference;
-import java.util.Calendar;
 
 public class BixlightService extends AccessibilityService {
 
@@ -42,7 +41,7 @@ public class BixlightService extends AccessibilityService {
                 "onAccessibilityEvent: [type] %s [time] %s [activeWindowPackage] %s",
                 AccessibilityEvent.eventTypeToString(event.getEventType()), event.getEventTime(), activeWindowPackage));
 
-        long currentMillis = Calendar.getInstance().getTimeInMillis();
+        long currentMillis = System.currentTimeMillis();
         boolean runTooSoon = (currentMillis - lastRunMillis) < MAX_RUN_FREQUENCY_MS;
 
         if (runTooSoon || !BIXBY_PACKAGE.equals(activeWindowPackage)) {
@@ -50,10 +49,10 @@ public class BixlightService extends AccessibilityService {
         }
 
         if (setupCameraIfNeeded()) {
+            String action = torchEnabled ? "OFF" : "ON";
+            Log.v(TAG, "turning " + action + " torch");
+            lastRunMillis = currentMillis;
             try {
-                String action = torchEnabled ? "OFF" : "ON";
-                Log.v(TAG, "turning " + action + " torch");
-                lastRunMillis = currentMillis;
                 cameraManager.setTorchMode(cameraId, !torchEnabled);
             } catch (CameraAccessException e) {
                 Log.v(TAG, "failed to toggle torch");
