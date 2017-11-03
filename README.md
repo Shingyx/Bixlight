@@ -29,4 +29,5 @@ See my other project to find out how I set up Travis to create signed APKs as Gi
 
 
 ## Thanks
-Thanks to [Dantee296](https://github.com/Dantee296) for providing the fix for the AQG5 update.
+* Thanks to [Dantee296](https://github.com/Dantee296) for providing the fix for the AQG5 update.
+* Thanks to [jcrisp](https://github.com/jcrisp) for fixing the flickering torch issue when the phone is under load.
