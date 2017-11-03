@@ -18,7 +18,6 @@ public class BixlightService extends AccessibilityService {
 
     private static final String TAG = BixlightService.class.getSimpleName();
     private static final String BIXBY_PACKAGE = "com.samsung.android.app.spage";
-    private static final long MAX_RUN_FREQUENCY_MS = 750;
 
     private CameraManager cameraManager;
     private String cameraId;
@@ -42,7 +41,8 @@ public class BixlightService extends AccessibilityService {
                 AccessibilityEvent.eventTypeToString(event.getEventType()), event.getEventTime(), activeWindowPackage));
 
         long currentMillis = System.currentTimeMillis();
-        boolean runTooSoon = (currentMillis - lastRunMillis) < MAX_RUN_FREQUENCY_MS;
+        long maxRunFrequencyMs = ((BixlightApplication) getApplication()).getMaxRunFrequencyMs();
+        boolean runTooSoon = (currentMillis - lastRunMillis) < maxRunFrequencyMs;
 
         if (runTooSoon || !BIXBY_PACKAGE.equals(activeWindowPackage)) {
             return;

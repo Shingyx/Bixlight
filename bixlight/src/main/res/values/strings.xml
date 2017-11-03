@@ -5,4 +5,7 @@
     <string name="service_enabled">Bixlight is currently enabled</string>
     <string name="service_disabled">Bixlight is currently disabled</string>
     <string name="service_description">Enable Bixlight to remap the Bixby button to toggle the torch</string>
+    <string name="max_frequency_label">Max frequency:</string>
+    <string name="max_frequency_description">The minimum amount of time between torch toggles. Increase this if you are experiencing flickering issues.</string>
+    <string name="milliseconds">ms</string>
 </resources>
