@@ -15,6 +15,7 @@ private val TAG = MainActivity::class.java.simpleName
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bixlightServiceId: String
+    private lateinit var bixlightPreferences: BixlightPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         bixlightServiceId = "$packageName/.${BixlightService::class.java.simpleName}"
+        bixlightPreferences = BixlightPreferences(this)
 
         openSettings.setOnClickListener {
             val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
@@ -29,8 +31,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        val maxRunFrequencyMs = (application as BixlightApplication).maxRunFrequencyMs
-        maxFrequency.setText(maxRunFrequencyMs.toString())
+        maxFrequency.setText(bixlightPreferences.getSavedMaxRunFrequencyMs().toString())
         maxFrequency.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {
             }
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
             override fun afterTextChanged(editable: Editable) {
                 val input = editable.toString()
                 val value = if (!input.isEmpty()) Integer.parseInt(input) else 0
-                (application as BixlightApplication).maxRunFrequencyMs = value
+                bixlightPreferences.saveMaxRunFrequencyMs(value)
             }
         })
     }

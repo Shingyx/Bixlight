@@ -15,6 +15,7 @@ private const val BIXBY_PACKAGE = "com.samsung.android.app.spage"
 
 class BixlightService : AccessibilityService() {
     private lateinit var cameraManager: CameraManager
+    private lateinit var bixlightPreferences: BixlightPreferences
     private var cameraId: String? = null
     private var torchCallback: CameraManager.TorchCallback? = null
     private var torchEnabled: Boolean = false
@@ -23,6 +24,7 @@ class BixlightService : AccessibilityService() {
     override fun onServiceConnected() {
         Log.v(TAG, "onServiceConnected")
         cameraManager = getSystemService(CameraManager::class.java)
+        bixlightPreferences = BixlightPreferences(this)
         setupCameraIfNeeded()
     }
 
@@ -32,8 +34,7 @@ class BixlightService : AccessibilityService() {
         Log.v(TAG, "onAccessibilityEvent: [type] ${AccessibilityEvent.eventTypeToString(event.eventType)} [time] ${event.eventTime} [activeWindowPackage] $activeWindowPackage")
 
         val currentMillis = System.currentTimeMillis()
-        val maxRunFrequencyMs = (application as BixlightApplication).maxRunFrequencyMs
-        val runTooSoon = currentMillis - lastRunMillis < maxRunFrequencyMs
+        val runTooSoon = currentMillis - lastRunMillis < bixlightPreferences.getSavedMaxRunFrequencyMs()
 
         if (runTooSoon || activeWindowPackage != BIXBY_PACKAGE) {
             return
