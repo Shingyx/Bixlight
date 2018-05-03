@@ -28,7 +28,7 @@
             android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
         <Button
-            android:id="@+id/open_settings"
+            android:id="@+id/openSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -57,12 +57,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:labelFor="@id/max_frequency"
+                android:labelFor="@id/maxFrequency"
                 android:text="@string/max_frequency_label"
                 android:textAppearance="@android:style/TextAppearance.Material.Medium" />
 
             <EditText
-                android:id="@+id/max_frequency"
+                android:id="@+id/maxFrequency"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="4"
