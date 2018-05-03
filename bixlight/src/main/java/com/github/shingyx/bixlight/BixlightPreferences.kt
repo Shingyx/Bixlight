@@ -19,5 +19,4 @@ class BixlightPreferences(context: Context) {
         editor.putInt(SAVED_MAX_RUN_FREQUENCY_MS, maxRunFrequencyMs)
         editor.apply()
     }
-
 }
