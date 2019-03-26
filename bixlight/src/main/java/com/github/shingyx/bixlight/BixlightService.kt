@@ -11,7 +11,10 @@ import android.view.accessibility.AccessibilityEvent
 import java.lang.ref.WeakReference
 
 private val TAG = BixlightService::class.java.simpleName
-private const val BIXBY_PACKAGE = "com.samsung.android.app.spage"
+private val BIXBY_PACKAGES = hashSetOf(
+        "com.samsung.android.app.spage",
+        "com.samsung.android.bixby.agent"
+)
 
 class BixlightService : AccessibilityService() {
     private lateinit var cameraManager: CameraManager
@@ -36,7 +39,7 @@ class BixlightService : AccessibilityService() {
         val currentMillis = System.currentTimeMillis()
         val runTooSoon = currentMillis - lastRunMillis < bixlightPreferences.getSavedMaxRunFrequencyMs()
 
-        if (runTooSoon || activeWindowPackage != BIXBY_PACKAGE) {
+        if (runTooSoon || activeWindowPackage !in BIXBY_PACKAGES) {
             return
         }
 
