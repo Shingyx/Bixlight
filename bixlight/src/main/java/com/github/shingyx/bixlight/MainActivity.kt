@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
             override fun afterTextChanged(editable: Editable) {
                 val input = editable.toString()
-                val value = if (!input.isEmpty()) Integer.parseInt(input) else 0
+                val value = if (input.isNotEmpty()) Integer.parseInt(input) else 0
                 bixlightPreferences.saveMaxRunFrequencyMs(value)
             }
         })
