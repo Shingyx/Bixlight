@@ -4,12 +4,10 @@ import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraManager
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Handler
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
-import java.lang.ref.WeakReference
 
 private val TAG = BixlightService::class.java.simpleName
 private val BIXBY_PACKAGE = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
@@ -20,6 +18,7 @@ private val BIXBY_PACKAGE = if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
 
 class BixlightService : AccessibilityService() {
     private lateinit var cameraManager: CameraManager
+    private lateinit var handler: Handler
     private lateinit var bixlightPreferences: BixlightPreferences
     private lateinit var torchCallback: CameraManager.TorchCallback
     private lateinit var cameraId: String
@@ -28,7 +27,8 @@ class BixlightService : AccessibilityService() {
 
     override fun onServiceConnected() {
         Log.v(TAG, "onServiceConnected")
-        cameraManager = getSystemService(CameraManager::class.java)
+        cameraManager = getSystemService(CameraManager::class.java)!!
+        handler = Handler()
         bixlightPreferences = BixlightPreferences(this)
         torchCallback = object : CameraManager.TorchCallback() {
             override fun onTorchModeChanged(cameraId: String, enabled: Boolean) {
@@ -36,7 +36,7 @@ class BixlightService : AccessibilityService() {
             }
         }
 
-        cameraManager.registerTorchCallback(torchCallback, Handler())
+        cameraManager.registerTorchCallback(torchCallback, handler)
         Log.v(TAG, "registered torch callback")
         hasCameraId()
     }
@@ -62,7 +62,10 @@ class BixlightService : AccessibilityService() {
                 Log.v(TAG, "failed to toggle torch")
             }
         }
-        DelayedBackButtonTask(this).execute()
+
+        handler.postDelayed({
+            performGlobalAction(GLOBAL_ACTION_BACK)
+        }, 50)
     }
 
     override fun onInterrupt() {
@@ -90,18 +93,5 @@ class BixlightService : AccessibilityService() {
             }
         }
         return true
-    }
-}
-
-private class DelayedBackButtonTask(context: BixlightService) : AsyncTask<Unit, Unit, Unit>() {
-    private val serviceReference: WeakReference<BixlightService> = WeakReference(context)
-
-    override fun doInBackground(vararg args: Unit) {
-        try {
-            Thread.sleep(50)
-        } catch (e: InterruptedException) {
-            Log.v(TAG, "interrupted")
-        }
-        serviceReference.get()?.performGlobalAction(AccessibilityService.GLOBAL_ACTION_BACK)
     }
 }

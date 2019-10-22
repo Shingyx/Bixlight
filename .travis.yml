@@ -16,8 +16,6 @@ before_script:
   # Suppress output to keep log under Travis limit
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "tools" > /dev/null
   - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platform-tools" > /dev/null
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "build-tools;28.0.3" > /dev/null
-  - echo yes | ${ANDROID_HOME}tools/bin/sdkmanager "platforms;android-28" > /dev/null
 
 script:
   # Skip the signed release build for pull requests
@@ -25,14 +23,14 @@ script:
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash ./gradlew clean assembleDebug test; fi'
 
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+  - rm -f  ${HOME}/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr ${HOME}/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
+    - ${HOME}/.gradle/caches/
+    - ${HOME}/.gradle/wrapper/
+    - ${HOME}/.android/build-cache/
 
 deploy:
   provider: releases
