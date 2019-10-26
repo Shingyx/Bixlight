@@ -1,6 +1,6 @@
-# Bixlight
+<p align="center"><img width="120" src="bixlight/src/main/ic_launcher-web.png"></p>
 
-[![Build Status](https://travis-ci.org/Shingyx/Bixlight.svg?branch=master)](https://travis-ci.org/Shingyx/Bixlight)
+<h1 align="center">Bixlight <a href="https://travis-ci.org/Shingyx/Bixlight"><img src="https://travis-ci.org/Shingyx/Bixlight.svg?branch=master"></a></h1>
 
 This application allows you to remap the Bixby button on the Galaxy S8/S8+ to toggle the torch.
 
