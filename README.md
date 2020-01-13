@@ -19,15 +19,6 @@ In my testing, Bixlight is the best compromise in terms of how fast Bixby closes
 Combination of Bixby and light... ¯\\\_(ツ)_/¯
 
 
-## Why are you releasing it on GitHub instead of the Play Store?
-
-Because I'm a strong believer of open source software and it lets me reassure users that I'm not violating anyone's privacy by collecting personal information. This thing doesn't even ask for internet access!
-
-Actually, it's just because I'm too cheap to pay the registration fee for the Play Store.
-
-See my other project to find out how I set up Travis to create signed APKs as GitHub releases: https://github.com/Shingyx/travis-signed-apk-release-example
-
-
 ## Thanks
 * Thanks to [Dantee296](https://github.com/Dantee296) for providing the fix for the AQG5 update.
 * Thanks to [jcrisp](https://github.com/jcrisp) for fixing the flickering torch issue when the phone is under load and for raising an issue for Android 9 incompatibility.
